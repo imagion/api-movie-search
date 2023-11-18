@@ -1,0 +1,14 @@
+{
+  "name": "api-movie-search",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "watch": "npx tailwindcss -i ./src/style.css -o ./dist/style.css --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.3.5"
+  }
+}
