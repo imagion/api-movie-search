@@ -1,9 +1,11 @@
-import { useEffect, useReducer } from 'react';
-import Header from './components/Header';
-import Search from './components/Search';
-import Movie from './components/Movie';
+'use client';
 
-const MOVIE_API_URL = import.meta.env.VITE_API_KEY;
+import { useEffect, useReducer } from 'react';
+import Header from '@/components/Header';
+import Movie from '@/components/Movie';
+import Search from '@/components/Search';
+
+const MOVIE_API_URL = `https://www.omdbapi.com/?s=man&apikey=${process.env.NEXT_PUBLIC_API_KEY}`;
 
 const initialState = {
   loading: true,
@@ -36,7 +38,7 @@ const reducer = (state, action) => {
   }
 };
 
-export default function App() {
+export default function Home() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
@@ -53,7 +55,9 @@ export default function App() {
   const search = (searchValue) => {
     dispatch({ type: 'SEARCH_MOVIES_REQUEST' });
 
-    fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=4a3b711b`)
+    fetch(
+      `https://www.omdbapi.com/?s=${searchValue}&apikey=${process.env.NEXT_PUBLIC_API_KEY}`
+    )
       .then((response) => response.json())
       .then((jsonResponse) => {
         if (jsonResponse.Response === 'True') {
