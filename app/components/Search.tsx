@@ -1,17 +1,18 @@
-import { useState } from 'react'
+import { SearchProps } from '@/types/globals';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
-export default function Search(props) {
-  const [searchValue, setSearchValue] = useState('')
+export default function Search({ search }: SearchProps) {
+  const [searchValue, setSearchValue] = useState('');
 
-  const handleSearchInputChanges = e => {
-    setSearchValue(e.target.value)
-  }
+  const handleSearchInputChanges = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
 
-  const callSearchFunction = e => {
-    e.preventDefault()
-    props.search(searchValue)
-    setSearchValue('')
-  }
+  const callSearchFunction = (e: FormEvent) => {
+    e.preventDefault();
+    search(searchValue);
+    setSearchValue('');
+  };
 
   return (
     <form className='search flex justify-center p-1 mt-3'>
@@ -26,10 +27,9 @@ export default function Search(props) {
         onClick={callSearchFunction}
         className='p-1 bg-transparent text-black uppercase w-20 ml-1
         border-solid border-2 border-black cursor-pointer
-        hover:bg-gray-600 hover:text-gray-50'
-      >
+        hover:bg-gray-600 hover:text-gray-50'>
         Search
       </button>
     </form>
-  )
+  );
 }

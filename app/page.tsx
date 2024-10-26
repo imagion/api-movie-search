@@ -4,16 +4,17 @@ import { useEffect, useReducer } from 'react';
 import Header from '@/components/Header';
 import Movie from '@/components/Movie';
 import Search from '@/components/Search';
+import { Action, State } from '@/types/globals';
 
 const MOVIE_API_URL = `https://www.omdbapi.com/?s=man&apikey=${process.env.NEXT_PUBLIC_API_KEY}`;
 
-const initialState = {
+const initialState: State = {
   loading: true,
-  movies: [],
   error: null,
+  movies: [],
 };
 
-const reducer = (state, action) => {
+const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'SEARCH_MOVIES_REQUEST':
       return {
@@ -25,16 +26,16 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        movies: action.payload,
+        movies: action.payload || [],
       };
     case 'SEARCH_MOVIES_FAILURE':
       return {
         ...state,
         loading: false,
-        error: action.error,
+        error: action.error || null,
       };
     default:
-      return state;
+      throw new Error(`Unhandled action type: ${action.type}`);
   }
 };
 
@@ -52,7 +53,7 @@ export default function Home() {
       });
   }, []);
 
-  const search = (searchValue) => {
+  const search = (searchValue: string) => {
     dispatch({ type: 'SEARCH_MOVIES_REQUEST' });
 
     fetch(
@@ -81,16 +82,15 @@ export default function Home() {
       <Header text='MOVIE SEARCHER' />
       <Search search={search} />
       <p className='intro text-xl'>Sharing a few of our favourite movies</p>
-
       <div
         className='movies
       flex flex-wrap flex-row justify-center xl:max-w-7xl xl:m-auto'>
         {loading && !error ? (
-          <span>loading...</span>
+          <span>Loading...</span>
         ) : error ? (
           <div className='error m-auto font-bold text-red-800'>{error}</div>
         ) : (
-          movies.map((movie, index) => (
+          movies?.map((movie, index) => (
             <Movie key={`${index}-${movie.Title}`} movie={movie} />
           ))
         )}
